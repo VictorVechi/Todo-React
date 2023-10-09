@@ -23,7 +23,7 @@ Foi utilizado no projeto as stacks a seguir:
 ## Como executar o projeto
 ```bash
 # Clone este repositório
-$ git clone https://github.com/VictorVechi/APIordenador.git
+$ git clone https://github.com/VictorVechi/Todo-React.git
 # Acesse a pasta do projeto no terminal/cmd
 $ cd Todo-React
 # Abra a pasta com o VS CODE
