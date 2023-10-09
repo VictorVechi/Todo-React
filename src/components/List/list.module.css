@@ -1,0 +1,60 @@
+
+.lista {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+ul {
+    width: 30%;
+}
+
+form {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+}
+
+input {
+    background-color: transparent;
+    border: solid 1px #F6F7F9;
+    color: #F6F7F9;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.edicao {
+    width: 150px;
+    background-color: transparent;
+    border: solid 1px #F6F7F9;
+    color: #F6F7F9;
+}
+
+.elementos {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+button {
+    border: solid 1px #F6F7F9;
+    color: #FFFFFF;
+    padding: 0px 10px 0px;
+    border-radius: 10px;
+}
+
+.delete {
+    background-color: #DC3545;
+}
+
+.edit {
+    background-color: #FFC107;
+    color: #000000;
+}
+
+.add {
+    background-color: #22A745;
+}
