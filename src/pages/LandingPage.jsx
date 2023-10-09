@@ -6,6 +6,7 @@ const LandingPage = () => {
     
 
     return (
+        // Cria a página inicial com o componente List
         <div className={Styles.container}>
             <List/>
         </div>
