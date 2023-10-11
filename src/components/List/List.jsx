@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Styles from './list.module.css'
 import Button from '../button/Button';
+import Input from '../Input/Input';
 
 
 const List = () => {
@@ -9,10 +10,32 @@ const List = () => {
     //Estado para o input
     const [novaTarefa, setNovaTarefa] = useState('');
 
+    const [contador, setContador] = useState(0)
+
+    const [valorBusca, setValorBusca] = useState('')
+
+    useEffect(() => {
+        console.log(valorBusca)
+        tarefas.forEach((tarefaSelecionada) => {
+            const elemento = document.getElementById(`elemento${tarefaSelecionada.id}`)
+            elemento.style.backgroundColor = 'transparent'
+        })
+    }, [valorBusca])
+
+    const handleChange = (event) => {
+        setValorBusca(event.target.value)
+    }
+
     const envioTarefa = (event) => {
         event.preventDefault();
         //Cria uma nova tarefa com o texto do input
-        setTarefas([...tarefas, novaTarefa]);
+        const objNovaTarefa = {
+            id: contador,
+            titulo: novaTarefa,
+        }
+        setTarefas([...tarefas, objNovaTarefa]);
+
+        setContador(contador + 1)
         //Limpa o input
         setNovaTarefa('');
     };
@@ -20,46 +43,67 @@ const List = () => {
     //Função marcar task como concluída
     const concluirTarefa = (index) => {
         const novaTarefa = [...tarefas];
-        if(novaTarefa[index].indexOf('✅') == -1){
-            //Adiciona o ícone de concluído na tarefa
-            novaTarefa[index] = `✅ ${tarefas[index]}`;
-            //Atualiza o estado com o novo array
-            setTarefas(novaTarefa);
-        } else {
-            //Remove o ícone de concluído da tarefa
-            novaTarefa[index] = novaTarefa[index].replace('✅', '')
-            //Atualiza o estado com o novo array
-            setTarefas(novaTarefa);
-        }
+
+        const edicao = novaTarefa.map((tarefa) => {
+            if (tarefa.id == index) {
+                const concluido = tarefa.titulo
+                if (concluido.indexOf("✅") == -1) {
+                    return {
+                        id: tarefa.id,
+                        titulo: "✅" + tarefa.titulo
+                    }
+                } else {
+                    return {
+                        id: tarefa.id,
+                        titulo: tarefa.titulo.slice(1)
+                    }
+                }
+            }
+            return tarefa
+        })
+        setTarefas(edicao);
     };
 
     //Função editar task
     const editarTarefa = (index) => {
         const texto = document.getElementById('edicao').value
-        const editarTarefa = [...tarefas];
-        editarTarefa[index] = `${texto}`;
-        //Atualiza o estado com o novo array
-        setTarefas(editarTarefa);
+        if (texto != '') {
+            const editarTarefa = tarefas.map((tarefa) => {
+                if (tarefa.id == index) {
+                    return {
+                        id: tarefa.id,
+                        titulo: texto
+                    }
+                }
+                return tarefa
+                //Atualiza o estado com o novo array
 
+            })
+            setTarefas(editarTarefa);
+        }
     };
 
     //Função deletar task
     const deletar = (index) => {
         const removerTarefa = [...tarefas];
         //Remove a tarefa do array de tarefas
-        removerTarefa.splice(index, 1)
+        const filtro = removerTarefa.filter((elemento) => {
+            return elemento.id != index
+        })
         //Atualiza o estado com o novo array
-        setTarefas(removerTarefa);
+        setTarefas(filtro);
     }
 
     const buscar = () => {
-        const buscarTarefa = [...tarefas];
-        const tarefa = document.getElementById('buscar').value
-        buscarTarefa.indexOf(tarefa)
-        console.log(buscarTarefa.indexOf(tarefa))
-        const elemento = document.getElementById(`elemento${buscarTarefa.indexOf(tarefa)}`)
-        elemento.style.backgroundColor = 'green'
-        // elemento.style.border
+        // const tarefa = document.getElementById('buscar').value
+        const buscarTarefa = tarefas.filter((task) => {
+            return task.titulo == valorBusca || task.titulo == `✅${valorBusca}`
+        });
+
+        buscarTarefa.forEach((tarefaSelecionada) => {
+            const elemento = document.getElementById(`elemento${tarefaSelecionada.id}`)
+            elemento.style.backgroundColor = 'green'
+        })
     }
 
     return (
@@ -67,34 +111,27 @@ const List = () => {
             {/* Título da lista */}
             <h1>Minha Lista Diária</h1>
             <p>Nota: Ao clicar na tarefas ela é marcada como concluída</p>
-            <div>
-                <input type="text" name="" id="buscar" placeholder='Buscar tarefa'/>
-                <Button style={Styles.add} texto='Buscar' func= {()=> buscar()}/>
-            </div>
+            <Input tipo={"text"} texto={"Buscar tarefa"} estilo={Styles.buscar} valorBusca={valorBusca} func={handleChange} />
+            <Button style={Styles.add} texto='Buscar' func={() => buscar()} />
             {/* Formulário para adicionar tarefas */}
             <form onSubmit={envioTarefa}>
                 {/* Input para adicionar tarefas */}
-                <input
-                    type="text"
-                    placeholder="Adicionar nova tarefa"
-                    value={novaTarefa}
-                    onChange={(event) => setNovaTarefa(event.target.value)}
-                />
+                <Input tipo={"text"} texto={"Adicionar nova tarefa"} valorBusca={novaTarefa} func={(event) => setNovaTarefa(event.target.value)} />
                 {/* Botão para adicionar tarefas */}
-                <Button style={Styles.add} texto='Adicionar' tipo={"submit"}/>
+                <Button style={Styles.add} texto='Adicionar' tipo={"submit"} />
             </form>
             {/* Lista de tarefas */}
-            <ul>    
-                {tarefas.map((task, index) => (
-                    <div className={Styles.elementos}>
+            <ul>
+                {tarefas.map((task) => (
+                    <div className={Styles.elementos} key={task.id}>
                         {/* Para cada tarefa no array é construido uma <li> com um componente botão para edição e deleção
                         também é criado um <input> para a edição da tarefa */}
-                        <li key={index} id={`elemento${index}`} onClick={() => concluirTarefa(index)}>
-                                {task}
+                        <li key={task.id} id={`elemento${task.id}`} onClick={() => concluirTarefa(task.id)}>
+                            <a>{task.titulo}</a>
                         </li>
-                        <Button style={Styles.delete} texto='Deletar' key={index} func= {() => deletar(index)} />
-                        <Button style={Styles.edit} texto='Editar' key={index} func= {() => editarTarefa(index)} />
-                        <input id="edicao" className={Styles.edicao} type="text" placeholder="Edite aqui" ></input>
+                        <Button style={Styles.delete} texto='Deletar' key={`btnDelete${task.id}`} func={() => deletar(task.id)} />
+                        <Button style={Styles.edit} texto='Editar' key={`btnEdit${task.id}`} func={() => editarTarefa(task.id)} />
+                        <Input tipo={"text"} texto={"Edite aqui"} chave={"edicao"} estilo={Styles.edicao} />
                     </div>
                 ))}
             </ul>
