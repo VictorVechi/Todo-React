@@ -35,12 +35,13 @@ input {
 
 .elementos {
     display: flex;
+    width: 50%;
     justify-content: space-between;
     margin: 10px;
 }
 
 button {
-    border: solid 1px #F6F7F9;
+    border: 0px;
     color: #FFFFFF;
     padding: 0px 10px 0px;
     border-radius: 10px;
@@ -57,4 +58,16 @@ button {
 
 .add {
     background-color: #22A745;
+}
+
+@media screen and (max-width:767px) {
+    .elementos {
+        width: 100%;
+    }
+    ul {
+        width: 100%;
+    }
+    form {
+        width: 50%;
+    }
 }
