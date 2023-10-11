@@ -36,20 +36,30 @@ const List = () => {
     //Função editar task
     const editarTarefa = (index) => {
         const texto = document.getElementById('edicao').value
-        const novaTarefa = [...tarefas];
-        novaTarefa[index] = `${texto}`;
+        const editarTarefa = [...tarefas];
+        editarTarefa[index] = `${texto}`;
         //Atualiza o estado com o novo array
-        setTarefas(novaTarefa);
+        setTarefas(editarTarefa);
 
     };
 
     //Função deletar task
     const deletar = (index) => {
-        const novaTarefa = [...tarefas];
+        const removerTarefa = [...tarefas];
         //Remove a tarefa do array de tarefas
-        novaTarefa.splice(index, 1)
+        removerTarefa.splice(index, 1)
         //Atualiza o estado com o novo array
-        setTarefas(novaTarefa);
+        setTarefas(removerTarefa);
+    }
+
+    const buscar = () => {
+        const buscarTarefa = [...tarefas];
+        const tarefa = document.getElementById('buscar').value
+        buscarTarefa.indexOf(tarefa)
+        console.log(buscarTarefa.indexOf(tarefa))
+        const elemento = document.getElementById(`elemento${buscarTarefa.indexOf(tarefa)}`)
+        elemento.style.backgroundColor = 'green'
+        // elemento.style.border
     }
 
     return (
@@ -57,6 +67,10 @@ const List = () => {
             {/* Título da lista */}
             <h1>Minha Lista Diária</h1>
             <p>Nota: Ao clicar na tarefas ela é marcada como concluída</p>
+            <div>
+                <input type="text" name="" id="buscar" placeholder='Buscar tarefa'/>
+                <Button style={Styles.add} texto='Buscar' func= {()=> buscar()}/>
+            </div>
             {/* Formulário para adicionar tarefas */}
             <form onSubmit={envioTarefa}>
                 {/* Input para adicionar tarefas */}
@@ -75,7 +89,7 @@ const List = () => {
                     <div className={Styles.elementos}>
                         {/* Para cada tarefa no array é construido uma <li> com um componente botão para edição e deleção
                         também é criado um <input> para a edição da tarefa */}
-                        <li key={index} onClick={() => concluirTarefa(index)}>
+                        <li key={index} id={`elemento${index}`} onClick={() => concluirTarefa(index)}>
                                 {task}
                         </li>
                         <Button style={Styles.delete} texto='Deletar' key={index} func= {() => deletar(index)} />
