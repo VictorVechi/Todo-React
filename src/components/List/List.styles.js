@@ -1,12 +1,14 @@
+import styled from "styled-components";
 
-.lista {
+
+export const DivStyled = styled.div`
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     font-family: 'Montserrat', sans-serif;
-}
 
 ul {
     width: 30%;
@@ -71,3 +73,5 @@ button {
         width: 50%;
     }
 }
+
+`

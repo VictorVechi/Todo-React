@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Styles from './list.module.css'
 import Button from '../button/Button';
 import Input from '../Input/Input';
+import { DivStyled } from './List.styles';
 
 
 const List = () => {
@@ -107,35 +107,35 @@ const List = () => {
     }
 
     return (
-        <div className={Styles.lista}>
+        <DivStyled>
             {/* Título da lista */}
             <h1>Minha Lista Diária</h1>
             <p>Nota: Ao clicar na tarefas ela é marcada como concluída</p>
-            <Input tipo={"text"} texto={"Buscar tarefa"} estilo={Styles.buscar} valorBusca={valorBusca} func={handleChange} />
-            <Button style={Styles.add} texto='Buscar' func={() => buscar()} />
+            <Input tipo={"text"} texto={"Buscar tarefa"} estilo="buscar" valorBusca={valorBusca} func={handleChange} />
+            <Button style="add" texto='Buscar' func={() => buscar()} />
             {/* Formulário para adicionar tarefas */}
             <form onSubmit={envioTarefa}>
                 {/* Input para adicionar tarefas */}
                 <Input tipo={"text"} texto={"Adicionar nova tarefa"} valorBusca={novaTarefa} func={(event) => setNovaTarefa(event.target.value)} />
                 {/* Botão para adicionar tarefas */}
-                <Button style={Styles.add} texto='Adicionar' tipo={"submit"} />
+                <Button style="add" texto='Adicionar' tipo={"submit"} />
             </form>
             {/* Lista de tarefas */}
             <ul>
                 {tarefas.map((task) => (
-                    <div className={Styles.elementos} key={task.id}>
+                    <div className="elementos" key={task.id}>
                         {/* Para cada tarefa no array é construido uma <li> com um componente botão para edição e deleção
                         também é criado um <input> para a edição da tarefa */}
                         <li key={task.id} id={`elemento${task.id}`} onClick={() => concluirTarefa(task.id)}>
                             <a>{task.titulo}</a>
                         </li>
-                        <Button style={Styles.delete} texto='Deletar' key={`btnDelete${task.id}`} func={() => deletar(task.id)} />
-                        <Button style={Styles.edit} texto='Editar' key={`btnEdit${task.id}`} func={() => editarTarefa(task.id)} />
-                        <Input tipo={"text"} texto={"Edite aqui"} chave={"edicao"} estilo={Styles.edicao} />
+                        <Button style="delete" texto='Deletar' key={`btnDelete${task.id}`} func={() => deletar(task.id)} />
+                        <Button style="edit" texto='Editar' key={`btnEdit${task.id}`} func={() => editarTarefa(task.id)} />
+                        <Input tipo={"text"} texto={"Edite aqui"} chave={"edicao"} estilo="edicao" />
                     </div>
                 ))}
             </ul>
-        </div>
+        </DivStyled>
     )
 }
 
