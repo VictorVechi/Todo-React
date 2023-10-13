@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '../button/Button';
 import Input from '../Input/Input';
 import { DivStyled } from './List.styles';
+import Form from '../Form/Form';
 
 
 const List = () => {
@@ -9,9 +10,7 @@ const List = () => {
     const [tarefas, setTarefas] = useState([]);
     //Estado para o input
     const [novaTarefa, setNovaTarefa] = useState('');
-
     const [contador, setContador] = useState(0)
-
     const [valorBusca, setValorBusca] = useState('')
 
     useEffect(() => {
@@ -114,12 +113,7 @@ const List = () => {
             <Input tipo={"text"} texto={"Buscar tarefa"} estilo="buscar" valorBusca={valorBusca} func={handleChange} />
             <Button style="add" texto='Buscar' func={() => buscar()} />
             {/* Formulário para adicionar tarefas */}
-            <form onSubmit={envioTarefa}>
-                {/* Input para adicionar tarefas */}
-                <Input tipo={"text"} texto={"Adicionar nova tarefa"} valorBusca={novaTarefa} func={(event) => setNovaTarefa(event.target.value)} />
-                {/* Botão para adicionar tarefas */}
-                <Button style="add" texto='Adicionar' tipo={"submit"} />
-            </form>
+            <Form enviar={envioTarefa} novaTarefa={novaTarefa} setNovaTarefa={setNovaTarefa}/>
             {/* Lista de tarefas */}
             <ul>
                 {tarefas.map((task) => (
